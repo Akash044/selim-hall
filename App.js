@@ -1,7 +1,8 @@
 import React, {createContext, useState} from 'react';
 import 'react-native-gesture-handler';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, View} from 'react-native';
+import {Text, Button} from 'react-native-paper';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import HomePage from './Components/HomePage/HomePage';
@@ -18,18 +19,52 @@ export const userContext = createContext();
 
 const App = () => {
   const [loggedUser, setLoggedUser] = useState({});
+
+  const signOut =  () => {
+    setLoggedUser({});
+   
+  };
   return (
     <userContext.Provider value={[loggedUser, setLoggedUser]}>
       <SafeAreaProvider>
         <NavigationContainer>
-          <screenStack.Navigator initialRouteName="User">
+          <screenStack.Navigator initialRouteName="Home">
           {/* <screenStack.Screen name="User" component={UserDashboard} /> */}
-          <screenStack.Screen name="Admin" component={AdminDashBoard} />
+          {/* <screenStack.Screen name="Admin" component={AdminDashBoard} /> */}
 
-            {/* {loggedUser.isAdmin ? (
-              <screenStack.Screen name="Admin" component={AdminDashBoard} />
+            {loggedUser.isAdmin ? (
+              <screenStack.Screen
+              options={{
+                headerRight: () => (
+                  <View style={{flexDirection: 'row'}}>
+                    <View style={{paddingTop: 9}}>
+                      <Text>{loggedUser?.email.split(".")[0]} </Text>
+                    </View>
+                    <View style={{paddingRight: 5}}>
+                      <Button onPress={signOut}>logout</Button>
+                    </View>
+                  </View>
+                ),
+              }}
+              
+              
+              name="Admin" component={AdminDashBoard} />
             ) : loggedUser.isUser ? ( 
-              <screenStack.Screen name="User" component={UserDashboard} />
+              <screenStack.Screen
+              options={{
+                headerRight: () => (
+                  <View style={{flexDirection: 'row'}}>
+                    <View style={{paddingTop: 9}}>
+                      <Text>{loggedUser?.name} </Text>
+                    </View>
+                    <View style={{paddingRight: 5}}>
+                      <Button onPress={signOut} > logout </Button>
+                    </View>
+                  </View>
+                ),
+              }}
+              
+              name="User" component={UserDashboard} />
             ) : (
               <>
                 <screenStack.Screen name="Home" component={HomePage} />
@@ -37,7 +72,7 @@ const App = () => {
                 <screenStack.Screen name="SignUp" component={SignUp} />
                 <screenStack.Screen name="Search" component={SearchResult} />
               </>
-            )} */}
+            )}
           </screenStack.Navigator>
         </NavigationContainer>
       </SafeAreaProvider>

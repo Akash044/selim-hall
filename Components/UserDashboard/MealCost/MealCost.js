@@ -8,6 +8,8 @@ const MealCost = props => {
   const [mealRates, setMealRates] = useState([])
   const [mealsAndRate, setMealsAndRate] = useState([]);
 
+  const ar = [];
+
    
   useEffect(() => {
     fetch(`https://thawing-meadow-93763.herokuapp.com/boarderMeal/${props.email}`)
@@ -35,16 +37,30 @@ const MealCost = props => {
   const handleCheckMealCost = () => {
 
     const myMealMonth = mealData.filter(meal => parseInt(meal.year) == parseInt(search.year) && parseInt(meal.month) == parseInt(search.month));
-       console.log(myMealMonth);
+       console.log("my matched meal--> ",myMealMonth);
    
     const mealMonth = mealRates.filter(mealRate => parseInt(mealRate.today.year) == parseInt(search.year) && parseInt(mealRate.today.month) == parseInt(search.month));
-       console.log(mealMonth)
+       console.log("matched meal rate month--> ",mealMonth)
 
     myMealMonth.forEach(myMeal => {
 
       mealMonth.forEach(meal => {
+        // console.log(myMeal.day, meal.today.day)
 
-        if (parseInt(myMeal.day) === parseInt(meal.today.day)){
+        if (myMeal.day === meal.today.day){
+          console.log(myMeal.day, meal.today.day)
+          ar.push({
+            date:myMeal.date, 
+            mq:myMeal.morning,
+            lq:myMeal.lunch,
+            dq:myMeal.dinner,
+            mr: meal.morning,
+            lr:meal.lunch,
+            dr:meal.dinner,
+            mc: myMeal.morning * meal.morning,
+            lc: myMeal.lunch * meal.lunch,
+            dc: myMeal.dinner * meal.dinner
+          })
           setMealsAndRate([...mealsAndRate,{
             date:myMeal.date, 
             mq:myMeal.morning,
@@ -66,6 +82,7 @@ const MealCost = props => {
     // }))
 
   }
+  console.log(mealsAndRate, ar);
   return (
     <View>
       <View style={{justifyContent:"center",alignItems:"center"}}>

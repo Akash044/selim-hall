@@ -1,11 +1,16 @@
 import React, {useState} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View, ActivityIndicator} from 'react-native';
 import {TextInput, Button, Title} from 'react-native-paper';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import {Image} from 'react-native-elements';
 import {Formik, Field} from 'formik';
 import * as yup from 'yup';
 
 const signUpValidationSchema = yup.object().shape({
   name: yup.string().required('User name is Required'),
+  roll: yup.string().required('User name is Required'),
+  dept: yup.string().required('User name is Required'),
+  contactNo: yup.number().min(11).required('User name is Required'),
   email: yup
     .string()
     .matches(
@@ -26,19 +31,42 @@ const signUpValidationSchema = yup.object().shape({
 
 const SignUp = ({route, navigation}) => {
   const {roomNo} = route.params;
+  const [imageData, setImageData] = useState({});
 
   const handleRegisterBtn = values => {
-    console.log(values)
+    console.log(values);
     fetch('http://localhost:8085/addBoarder', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify(values),
+      body: JSON.stringify({...values,...imageData}),
     })
       .then(res => res.json())
       .then(data => {
         console.log(data);
         data && alert('boarder info added successfully');
       });
+  };
+
+  const handleImgInput = () => {
+    const options = {
+      includeBase64: true,
+      maxWidth: 100,
+      maxHeight: 100,
+      quality: 0.8,
+      // noData: true,
+    };
+    try{
+      launchImageLibrary(options, response => {
+        if (response.didCancel) {
+          alert('Please select a photo');
+        } else if (response.assets[0].uri) {
+          console.log(response);
+          setImageData({...response.assets[0]});
+        }
+      })
+    }catch(err){
+      alert("something went wrong, please try again")
+    }
   };
 
   return (
@@ -50,6 +78,9 @@ const SignUp = ({route, navigation}) => {
           validationSchema={signUpValidationSchema}
           initialValues={{
             name: '',
+            roll: '',
+            dept:'',
+            contactNo:'',
             email: '',
             password: '',
             confirmPassword: '',
@@ -65,8 +96,7 @@ const SignUp = ({route, navigation}) => {
           }) => (
             <>
               <TextInput
-              mode="outlined"
-                
+                mode="outlined"
                 name="name"
                 placeholder="User name"
                 style={styles.textInput}
@@ -80,7 +110,48 @@ const SignUp = ({route, navigation}) => {
 
               <TextInput
                 mode="outlined"
-             
+                name="roll"
+                placeholder="User roll"
+                style={styles.textInput}
+                onChangeText={handleChange('roll')}
+                onBlur={handleBlur('roll')}
+                value={values.roll}
+                keyboardType='numeric'
+              />
+              {errors.roll && (
+                <Text style={{fontSize: 10, color: 'red'}}>{errors.roll}</Text>
+              )}
+
+              <TextInput
+                mode="outlined"
+                name="dept"
+                placeholder="User dept"
+                style={styles.textInput}
+                onChangeText={handleChange('dept')}
+                onBlur={handleBlur('dept')}
+                value={values.dept}
+              />
+              {errors.dept && (
+                <Text style={{fontSize: 10, color: 'red'}}>{errors.dept}</Text>
+              )}
+              <TextInput
+                mode="outlined"
+                name="contactNo"
+                placeholder="User contact no."
+                style={styles.textInput}
+                onChangeText={handleChange('contactNo')}
+                onBlur={handleBlur('contactNo')}
+                value={values.contactNo}
+                keyboardType='numeric'
+              />
+              {errors.contactNo && (
+                <Text style={{fontSize: 10, color: 'red'}}>
+                  {errors.contactNo}
+                </Text>
+              )}
+
+              <TextInput
+                mode="outlined"
                 name="email"
                 placeholder="Email Address"
                 style={styles.textInput}
@@ -94,8 +165,7 @@ const SignUp = ({route, navigation}) => {
               )}
 
               <TextInput
-              mode="outlined"
-                
+                mode="outlined"
                 name="password"
                 placeholder="Password"
                 style={styles.textInput}
@@ -126,14 +196,37 @@ const SignUp = ({route, navigation}) => {
                 </Text>
               )}
 
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  marginTop: 15,
+                }}>
+                <Button icon="image" mode="outlined" onPress={handleImgInput}>
+                  Upload image{' '}
+                </Button>
+              </View>
+              <View>
+              {imageData?.uri && (
+                  <Image
+                    source={{uri: imageData.uri}}
+                    style={{
+                      width: 100,
+                      height: 100,
+                      borderRadius: 10,
+                      marginTop: 10,
+                    }}
+                    PlaceholderContent={<ActivityIndicator />}
+                  />
+                )}
+              </View>
               <View style={{marginTop: 20}}>
                 <Button
                   onPress={handleSubmit}
                   disabled={!isValid}
-                  mode = "contained"
-                >
+                  mode="contained">
                   Register
-              </Button>
+                </Button>
               </View>
             </>
           )}
@@ -147,7 +240,7 @@ const styles = StyleSheet.create({
     // flex: 1,
     // justifyContent: 'center',
     // alignItems: 'center',
-    paddingHorizontal:20
+    paddingHorizontal: 20,
   },
   containerText: {
     paddingBottom: 10,
@@ -158,6 +251,9 @@ const styles = StyleSheet.create({
     // borderWidth: 2,
     // padding: 10,
     // borderRadius: 10,
+  },
+  textInput: {
+    height: 35,
   },
 });
 

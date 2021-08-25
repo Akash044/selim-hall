@@ -29,6 +29,9 @@ const AddNewRoom = () => {
   const handleImgInput = () => {
     const options = {
       includeBase64: true,
+      maxWidth: 100,
+      maxHeight: 100,
+      quality: 0.1,
       // noData: true,
     };
     try{

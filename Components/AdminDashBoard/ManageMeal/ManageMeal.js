@@ -7,6 +7,7 @@ import {Formik, Field} from 'formik';
 import * as yup from 'yup';
 
 const mealCostValidationSchema = yup.object().shape({
+  marketerName: yup.string().required('Name is Required'),
   todayCost: yup.number().min(1).required('Today cost is Required'),
   morning: yup.number().min(1).required('Morning meal rate is required'),
   lunch: yup.number().min(1).required('Lunch meal rate is required'),
@@ -19,8 +20,8 @@ const ManageMeal = () => {
   const [load, setLoad] = useState(false);
   const [isDateTimePickerVisible, setIsDateTimePickerVisible] = useState(false);
 
-  const showDateTimePicker = () => {
-    setIsDateTimePickerVisible(true);
+  const showDateTimePicker = (value = true) => {
+    setIsDateTimePickerVisible(value);
   };
 
   const handleDatePicked = selectedDate => {
@@ -36,7 +37,7 @@ const ManageMeal = () => {
         year: yyyy,
       },
     });
-    setIsDateTimePickerVisible(false);
+    showDateTimePicker(false);
   };
 
   const handleUploadBtn = mr => {
@@ -76,6 +77,7 @@ const ManageMeal = () => {
         <Formik
           validationSchema={mealCostValidationSchema}
           initialValues={{
+            marketerName:'',
             todayCost: 0,
             morning: 0,
             lunch: 0,
@@ -91,6 +93,18 @@ const ManageMeal = () => {
             isValid,
           }) => (
             <>
+            <TextInput
+                mode="outlined"
+                name="marketerName"
+                placeholder="Marketer's Name"
+                onChangeText={handleChange('marketerName')}
+                onBlur={handleBlur('marketerName')}
+              />
+              {errors.marketerName && (
+                <Text style={{fontSize: 10, color: 'red'}}>
+                  {errors.marketerName}
+                </Text>
+              )}
               <TextInput
                 mode="outlined"
                 name="todayCost"

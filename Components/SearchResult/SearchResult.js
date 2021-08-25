@@ -22,7 +22,7 @@ const SearchResult = ({navigation}) => {
         setVacantRooms(vacRooms);
       });
   }, []);
-//  console.log(vacantRooms);
+ console.log(vacantRooms);
   const handleSearch = (value) => {
     navigation.navigate("SignUp",{
         roomNo: value,

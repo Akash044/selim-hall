@@ -36,19 +36,26 @@ const UserMealStatus = () => {
     console.log(mealInfo);
   };
   const handleSubmitBtn = () => {
-    setMealInfo({
-      ...mealInfo,
-      email: loggedUser.email,
-      year: ymd[0],
-      month: ymd[1],
-      day: ymd[2],
-      date: selectedDate,
-    });
-    console.log(selectedDate, mealInfo);
+    // setMealInfo({
+    //   ...mealInfo,
+    //   email: loggedUser.email,
+    //   year: ymd[0],
+    //   month: ymd[1],
+    //   day: ymd[2],
+    //   date: selectedDate,
+    // });
+    // console.log(selectedDate, mealInfo);
     fetch('https://thawing-meadow-93763.herokuapp.com/addMeal', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify(mealInfo),
+      body: JSON.stringify({
+        ...mealInfo,
+        email: loggedUser.email,
+        year: ymd[0],
+        month: ymd[1],
+        day: ymd[2],
+        date: selectedDate,
+      }),
     })
       .then(res => res.json())
       .then(data => {

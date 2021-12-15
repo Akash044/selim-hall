@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import { SafeAreaView, StyleSheet, View, FlatList } from 'react-native';
-import { ActivityIndicator, Colors, Text } from 'react-native-paper';
+import { StyleSheet, View, FlatList } from 'react-native';
+import { ActivityIndicator ,Colors, Text } from 'react-native-paper';
 import NetInfo from "@react-native-community/netinfo";
 import Item from './Item';
 
@@ -24,9 +24,7 @@ const SearchResult = ({navigation}) => {
   }, []);
  console.log(vacantRooms);
   const handleSearch = (value) => {
-    navigation.navigate("SignUp",{
-        roomNo: value,
-    })
+    navigation.navigate("SignUp",value)
   };
   const renderItem = ({item}) => <Item item={item} handleSearch={handleSearch}/>;
   return (

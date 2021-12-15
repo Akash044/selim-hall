@@ -34,6 +34,7 @@ const UserGuest = () => {
   };
 
   const handleDatePicked = selectedDate => {
+    console.log(selectedDate)
     const newDate = selectedDate?.nativeEvent.timestamp;
     const dd = String(newDate?.getDate()).padStart(2, '0');
     const mm = String(newDate?.getMonth() + 1).padStart(2, '0'); //January is 0!

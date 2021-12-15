@@ -61,6 +61,7 @@ const UserMealStatus = () => {
       .then(data => {
         console.log(data);
         data && alert('meal added successfully');
+        setLoggedUser({...loggedUser, todayMeal: ymd[2]})
       });
   };
 

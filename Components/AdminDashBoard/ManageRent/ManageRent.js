@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import Mailer from 'react-native-mail';
 import {
   StyleSheet,
   View,
@@ -30,9 +31,9 @@ const Item = props => (
       <Text style={{...styles.title, marginTop: 10}}>Change Status</Text>
       <Picker
         selectedValue={props.item.status}
-        style={{height: 50, width: 150}}
+        style={{height: 50, width: 150, color: '#FFFFFF'}}
         onValueChange={(itemValue, itemIndex) =>
-          props.handleChangeStatus({status: itemValue, trxID: props.item.trxId})
+          props.handleChangeStatus({status: itemValue, trxID: props.item.trxId, email:props.item.email})
         }>
         <Picker.Item label="pending" value="pending" />
         <Picker.Item label="paid" value="paid" />
@@ -43,63 +44,10 @@ const Item = props => (
 );
 
 const ManageRent = () => {
-  const [visible, setVisible] = useState(false);
-  const containerStyle = {backgroundColor: 'white', padding: 30};
+  const [visible, setVisible] = useState(true);
+  const containerStyle = { marginHorizontal: 30, borderRadius: 10,backgroundColor: 'white', padding: 30,  zIndex: 99};
   const [rentStatus, setRentStatus] = useState([]);
   const [status, setStatus] = useState('');
-
-  // useEffect(async () => {
-  //   firebase
-  //     .messaging()
-  //     .hasPermission()
-  //     .then(enabled => {
-  //       if (enabled) {
-  //         console.log('user has permissions');
-  //       } else {
-  //         console.log("user doesn't have permissions");
-  //         NotiPermission();
-  //       }
-  //     });
-
-  //   let fcmToken = await AsyncStorage.getItem('fcmToken');
-  //   console.log('fcm token', fcmToken);
-  //   if (!fcmToken) {
-  //     fcmToken = await firebase.messaging().getToken();
-  //     if (fcmToken) {
-  //       console.log('fcm token from firebase', fcmToken);
-  //       await AsyncStorage.getItem('fcmToken', fcmToken);
-  //     }
-  //   }
-  // }, []);
-
-  // const sendNotification = async () => {
-  //   const FIREBASE_API_KEY = '';
-  //   const message = {
-  //     registration_ids: [''],
-  //     notification: {
-  //       title: '',
-  //       body: '',
-  //       vibrate: 1,
-  //       sounds: 1,
-  //       show_in_foreground: true,
-  //       priority: 'high',
-  //       content_available: true,
-  //     },
-  //   };
-
-  //   let headers = new Headers({
-  //     Content_Type: 'application/json',
-  //     Authorization: 'key' + FIREBASE_API_KEY,
-  //   });
-
-  //   let response = await fetch('https://fcm.googleapis.com/fcm/send', {
-  //     method: 'POST',
-  //     headers,
-  //     body: JSON.stringify(message),
-  //   });
-  //   response = await response.json();
-  //   console.log(response);
-  // };
 
   useEffect(() => {
     setVisible(true);
@@ -112,6 +60,30 @@ const ManageRent = () => {
         setVisible(false);
       });
   }, [status]);
+
+  const handleEmail = (rent) => {
+    Mailer.mail({
+      subject: 'Rent payment status',
+      recipients: [rent.email],
+      body: `Your payment is ${rent.status} and TrxID is ${rent.trxID}. If face any difficulty, please contact 01737605991`,
+      isHTML: true,
+      attachment: {
+        path: '',  // The absolute path of the file from which to read data.
+        type: '',   // Mime Type: jpg, png, doc, ppt, html, pdf, csv
+        name: '',   // Optional: Custom filename for attachment
+      }
+    }, (error, event) => {
+      Alert.alert(
+        error,
+        event,
+        [
+          {text: 'Ok', onPress: () => console.log('OK: Email Error Response')},
+          {text: 'Cancel', onPress: () => console.log('CANCEL: Email Error Response')}
+        ],
+        { cancelable: true }
+      )
+    });
+  }
 
   const handleChangeStatus = rent => {
     console.log(rent.status);
@@ -127,6 +99,7 @@ const ManageRent = () => {
       .then(data => {
         console.log(data);
         // data && alert("payment status updated")
+        handleEmail(rent);
         setStatus(rent.status);
       });
   };
@@ -140,22 +113,23 @@ const ManageRent = () => {
     />
   );
 
-  return (
+  return (<>
     <SafeAreaView>
       <FlatList
         data={rentStatus}
         renderItem={renderItem}
         keyExtractor={item => item._id}
       />
-      <Provider>
+    </SafeAreaView>
+    <Provider>
         <Portal>
           <Modal visible={visible} contentContainerStyle={containerStyle}>
-            <Text>Loading. Please wait</Text>
-            <ActivityIndicator animating={true} color={Colors.red800} />
+            <Text>Loading... Please wait</Text>
+            <ActivityIndicator style={{ paddingTop: 10 }} animating={true} color={Colors.red800} />
           </Modal>
         </Portal>
       </Provider>
-    </SafeAreaView>
+    </>
   );
 };
 
@@ -167,13 +141,15 @@ const styles = StyleSheet.create({
     marginTop: StatusBar.currentHeight || 0,
   },
   item: {
-    backgroundColor: '#f9c2ff',
+    backgroundColor: '#A32CC4',
     padding: 20,
     marginVertical: 8,
     marginHorizontal: 16,
     borderRadius: 20,
+   
   },
   title: {
     fontSize: 18,
+    color: '#FFFFFF'
   },
 });

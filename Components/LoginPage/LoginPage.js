@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   Button,
   StyleSheet,
@@ -6,6 +6,8 @@ import {
   TextInput,
   View,
   ActivityIndicator,
+  SafeAreaView,
+  KeyboardAvoidingView
 } from 'react-native';
 import SignUp from '../SignUp/SignUp';
 import SignIn from '../SignIn/SignIn';
@@ -14,10 +16,10 @@ import {
   GoogleSigninButton,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
-import {userContext} from '../../App';
-import {ScrollView} from 'react-native-gesture-handler';
+import { userContext } from '../../App';
+import { ScrollView } from 'react-native-gesture-handler';
 
-const LoginPage = ({navigation}) => {
+const LoginPage = ({ navigation }) => {
   const [isDone, setIsDone] = useState(true);
   const [loggedUser, setLoggedUser] = useContext(userContext);
 
@@ -43,7 +45,7 @@ const LoginPage = ({navigation}) => {
       isAdminHandle(userInfo);
       // userInfo.user.id && navigation.push("Admin");
     } catch (error) {
-      console.log({error});
+      console.log({ error });
     }
   };
   // ${userInfo.user.email}
@@ -101,34 +103,41 @@ const LoginPage = ({navigation}) => {
   console.log('64', loggedUser);
 
   return (
-    <View>
-      <View style={styles.SignInView}>
-        <SignIn />
-      </View>
-      {/* <Text >Or....</Text> */}
-      <View style={styles.GoogleBtn}>
-        
-        <GoogleSigninButton
-          style={{width: 192, height: 48}}
-          size={GoogleSigninButton.Size.Wide}
-          color={GoogleSigninButton.Color.Dark}
-          onPress={handleGoogleSingIn}
-        />
-        {!isDone && <ActivityIndicator size="large" color="red" />}
-      </View>
-    </View>
+    <KeyboardAvoidingView style={styles.container}>
+    
+        <View style={styles.SignInView}>
+          <SignIn />
+
+        </View>
+        <View style={styles.GoogleBtn}>
+          <GoogleSigninButton
+            size={GoogleSigninButton.Size.small}
+            color={GoogleSigninButton.Color.Dark}
+            onPress={handleGoogleSingIn}
+          />
+          {!isDone && <ActivityIndicator size="large" color="red" />}
+        </View>
+        {/* <Text >Or....</Text> */}
+     
+    </KeyboardAvoidingView>
   );
 };
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   GoogleBtn: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingTop: 50,
+    marginTop:50
   },
   SignInView: {
-    padding: 20,
+    flex: 2,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
   },
 });
 

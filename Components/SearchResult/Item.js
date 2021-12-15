@@ -16,7 +16,7 @@ export default function Item(props) {
         <Paragraph>{props.item.description}</Paragraph>
       </Card.Content>
       <Card.Actions>
-        <Button onPress={() => props.handleSearch(props.item.roomNo)}>
+        <Button onPress={() => props.handleSearch({roomNo:props.item.roomNo, id:props.item._id})}>
           Book Now
         </Button>
       </Card.Actions>

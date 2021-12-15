@@ -20,7 +20,7 @@ const TodayStatus = () => {
           })
         });
     
-      },[])
+      },[loggedUser.todayMeal])
       console.log(todayStatus);
     return (
         <View style={styles.container} >

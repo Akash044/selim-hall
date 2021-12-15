@@ -1,9 +1,9 @@
 import React from 'react';
-import {useState} from 'react';
-import {StyleSheet, Text, View, SafeAreaView} from 'react-native';
-import {TextInput, Button, Title} from 'react-native-paper';
+import { useState } from 'react';
+import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
+import { TextInput, Button, Title } from 'react-native-paper';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import {Formik, Field} from 'formik';
+import { Formik, Field } from 'formik';
 import * as yup from 'yup';
 
 const mealCostValidationSchema = yup.object().shape({
@@ -18,13 +18,10 @@ const ManageMeal = () => {
   const today = new Date();
   const [date, setDate] = useState({});
   const [load, setLoad] = useState(false);
-  const [isDateTimePickerVisible, setIsDateTimePickerVisible] = useState(false);
-
-  const showDateTimePicker = (value = true) => {
-    setIsDateTimePickerVisible(value);
-  };
+  const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
 
   const handleDatePicked = selectedDate => {
+    setIsDatePickerVisible(false);
     const newDate = selectedDate?.nativeEvent.timestamp;
     const dd = String(newDate?.getDate()).padStart(2, '0');
     const mm = String(newDate?.getMonth() + 1).padStart(2, '0'); //January is 0!
@@ -37,7 +34,7 @@ const ManageMeal = () => {
         year: yyyy,
       },
     });
-    showDateTimePicker(false);
+    
   };
 
   const handleUploadBtn = mr => {
@@ -45,8 +42,8 @@ const ManageMeal = () => {
 
     fetch('http://localhost:8085/addMealRate', {
       method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({...mr, ...date}),
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...mr, ...date }),
     })
       .then(res => res.json())
       .then(data => {
@@ -57,7 +54,7 @@ const ManageMeal = () => {
 
   return (
     <View>
-      {isDateTimePickerVisible && (
+      {isDatePickerVisible && (
         <DateTimePicker
           testID="dateTimePicker"
           value={today}
@@ -68,16 +65,17 @@ const ManageMeal = () => {
 
       <View style={styles.inputContainer}>
         <Title>Meal Rate</Title>
-        <Button onPress={showDateTimePicker} mode="outlined">
-          select date
+        <Button onPress={()=> setIsDatePickerVisible(true)} mode="outlined">
+          {
+            date.today ? <Text style={{ fontSize: 16 }}> {"selected-> "}
+              {date.today?.day}-{date.today?.month}-{date.today?.year}
+            </Text> : "select date"
+          }
         </Button>
-        <Text style={{fontSize: 16}}>
-          {date.today?.day}-{date.today?.month}-{date.today?.year}{' '}
-        </Text>
         <Formik
           validationSchema={mealCostValidationSchema}
           initialValues={{
-            marketerName:'',
+            marketerName: '',
             todayCost: 0,
             morning: 0,
             lunch: 0,
@@ -93,7 +91,7 @@ const ManageMeal = () => {
             isValid,
           }) => (
             <>
-            <TextInput
+              <TextInput
                 mode="outlined"
                 name="marketerName"
                 placeholder="Marketer's Name"
@@ -101,7 +99,7 @@ const ManageMeal = () => {
                 onBlur={handleBlur('marketerName')}
               />
               {errors.marketerName && (
-                <Text style={{fontSize: 10, color: 'red'}}>
+                <Text style={{ fontSize: 10, color: 'red' }}>
                   {errors.marketerName}
                 </Text>
               )}
@@ -114,7 +112,7 @@ const ManageMeal = () => {
                 keyboardType="numeric"
               />
               {errors.todayCost && (
-                <Text style={{fontSize: 10, color: 'red'}}>
+                <Text style={{ fontSize: 10, color: 'red' }}>
                   {errors.todayCost}
                 </Text>
               )}
@@ -127,7 +125,7 @@ const ManageMeal = () => {
                 keyboardType="numeric"
               />
               {errors.morning && (
-                <Text style={{fontSize: 10, color: 'red'}}>
+                <Text style={{ fontSize: 10, color: 'red' }}>
                   {errors.morning}
                 </Text>
               )}
@@ -140,7 +138,7 @@ const ManageMeal = () => {
                 keyboardType="numeric"
               />
               {errors.lunch && (
-                <Text style={{fontSize: 10, color: 'red'}}>{errors.lunch}</Text>
+                <Text style={{ fontSize: 10, color: 'red' }}>{errors.lunch}</Text>
               )}
               <TextInput
                 mode="outlined"
@@ -151,11 +149,11 @@ const ManageMeal = () => {
                 keyboardType="numeric"
               />
               {errors.dinner && (
-                <Text style={{fontSize: 10, color: 'red'}}>
+                <Text style={{ fontSize: 10, color: 'red' }}>
                   {errors.dinner}
                 </Text>
               )}
-              <View style={{marginTop: 10}}>
+              <View style={{ marginTop: 10 }}>
                 <Button
                   icon="upload"
                   mode="contained"

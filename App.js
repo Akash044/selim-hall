@@ -18,7 +18,9 @@ const screenStack = createStackNavigator();
 export const userContext = createContext();
 
 const App = () => {
-  const [loggedUser, setLoggedUser] = useState({});
+  const [loggedUser, setLoggedUser] = useState({
+    booked:''
+  });
 
   const signOut =  () => {
     setLoggedUser({});

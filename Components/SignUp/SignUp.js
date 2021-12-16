@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { ScrollView, StyleSheet, Text, View, ActivityIndicator } from 'react-native';
 import { TextInput, Button, Title } from 'react-native-paper';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
@@ -6,6 +6,7 @@ import { Picker } from '@react-native-community/picker';
 import { Image } from 'react-native-elements';
 import { Formik, Field } from 'formik';
 import * as yup from 'yup';
+import { userContext } from '../../App';
 
 const signUpValidationSchema = yup.object().shape({
   name: yup.string().required('User name is Required'),
@@ -31,7 +32,7 @@ const signUpValidationSchema = yup.object().shape({
 });
 
 const SignUp = ({ route, navigation }) => {
-  const { roomNo, id} = route.params;
+  const { roomNo, id } = route.params;
   const [imageData, setImageData] = useState({});
   const [deptSec, setDeptSec] = useState({
     dept: 'CSE',
@@ -40,6 +41,7 @@ const SignUp = ({ route, navigation }) => {
   });
   const [takenImg, setTakenImg] = useState(false)
   // console.log("hiiii",route.params, id);
+  const [loggedUser, setLoggedUser] = useContext(userContext);
 
 
   const handlePickerField = value => {
@@ -48,10 +50,26 @@ const SignUp = ({ route, navigation }) => {
     // console.log(newRoomInfo);
   };
 
+  const updateRoomVacantStatus = () => {
+    console.log("called")
+    fetch('http://localhost:8085/bookedRoom', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: id, status: false }),
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+        setLoggedUser({ ...loggedUser, booked: id })
+        // data && alert('boarder info added successfully');
+      })
+      .catch(err => {console.log(err)})
+  }
+
   const handleRegisterBtn = values => {
     // console.log(values);
     const info = { ...values, ...deptSec }
-    fetch('https://thawing-meadow-93763.herokuapp.com/addBoarder', {
+    fetch('http://localhost:8085/addBoarder', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ ...info, ...imageData }),
@@ -60,7 +78,10 @@ const SignUp = ({ route, navigation }) => {
       .then(data => {
         // console.log(data);
         data && alert('boarder info added successfully');
-      });
+        data && updateRoomVacantStatus();
+
+      })
+      .catch(err => {console.log(err)})
   };
 
   const handleImgInput = () => {

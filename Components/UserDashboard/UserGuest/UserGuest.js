@@ -93,7 +93,8 @@ const UserGuest = () => {
           });
           data && setImageData({})
         setLoad(false);
-      });
+      })
+      .catch(err => {console.log(err)})
   };
 
   return (

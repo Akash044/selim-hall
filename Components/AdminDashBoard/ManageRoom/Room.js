@@ -45,7 +45,8 @@ const Room = (props) => {
             .then(data => {
                 data && alert('Room deleted successfully');
                 setLoggedUser({ ...loggedUser, deleted: roomId });
-            });
+            })
+            .catch(err => {console.log(err)})
     };
 
 

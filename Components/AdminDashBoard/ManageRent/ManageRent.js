@@ -58,7 +58,8 @@ const ManageRent = () => {
         // console.log(allPending);
         setRentStatus(data);
         setVisible(false);
-      });
+      })
+      .catch(err => {console.log(err)})
   }, [status]);
 
   const handleEmail = (rent) => {

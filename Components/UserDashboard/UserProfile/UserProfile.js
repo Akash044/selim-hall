@@ -16,7 +16,8 @@ const UserProfile = () => {
       .then(res => res.json())
       .then(data => {
         setUser(data);
-      });
+      })
+      .catch(err => {console.log(err)})
   }, []);
 
   const handleUpdate = value => {

@@ -49,7 +49,8 @@ const ManageMeal = () => {
       .then(data => {
         data && alert('added successfully');
         setLoad(false);
-      });
+      })
+      .catch(err => {console.log(err)})
   };
 
   return (

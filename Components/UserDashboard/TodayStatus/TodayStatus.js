@@ -18,7 +18,8 @@ const TodayStatus = () => {
           setTodayStatus({
               todayMealInfo: todayMeal[0]=== undefined? 0+"----------"+0+"---------"+0 : todayMeal[0].morning+"----------"+todayMeal[0].lunch+"---------"+todayMeal[0].dinner,
           })
-        });
+        })
+        .catch(err => {console.log(err)})
     
       },[loggedUser.todayMeal])
       console.log(todayStatus);

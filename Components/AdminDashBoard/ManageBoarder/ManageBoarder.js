@@ -28,7 +28,8 @@ const ManageBoarder = () => {
           setBoarders(boarders);
           setVisible(false);
                 // console.log('16 ', allRooms);
-        });
+        })
+        .catch(err => {console.log(err)})
     }, [])
     const renderItem = ({ item }) => <Boarder item={item} />;
     return (<>

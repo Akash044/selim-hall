@@ -30,7 +30,8 @@ const ManageRoom = () => {
         setAllRooms(rooms);
         setVisible(false);
         // console.log('16 ', allRooms);
-      });
+      })
+      .catch(err => {console.log(err)})
   }, [addedNew, updated]);
 
   useEffect(() => {

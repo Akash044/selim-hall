@@ -24,7 +24,8 @@ const MealCost = props => {
       .then(data => {
         console.log("my meals", data);
         setMealData(data);
-      });
+      })
+      .catch(err => {console.log(err)})
 
   }, [])
 
@@ -34,7 +35,8 @@ const MealCost = props => {
       .then(data => {
         console.log("all meal rate0", data);
         setMealRates(data);
-      });
+      })
+      .catch(err => {console.log(err)})
 
   }, [])
  

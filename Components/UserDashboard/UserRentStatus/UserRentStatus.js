@@ -50,7 +50,8 @@ const UserRentStatus = () => {
       .then(data => {
         data && alert('payment successful');
         setLoad(!load);
-      });
+      })
+      .catch(err => {console.log(err)})
   };
 
   const renderItem = ({item}) => <Item item={item} />;

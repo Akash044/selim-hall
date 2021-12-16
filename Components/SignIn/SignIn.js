@@ -52,7 +52,8 @@ const SignIn = () => {
         setError(data.message);
         setVisible(false);
 
-      });
+      })
+      .catch(err => {console.log(err)})
   };
 
   return (

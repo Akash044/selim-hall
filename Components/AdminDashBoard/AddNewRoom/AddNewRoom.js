@@ -23,7 +23,7 @@ const AddNewRoom = () => {
   const [takenImage, setTakenImage] = useState(false)
   const [visible, setVisible] = useState(false);
   const [newRoomInfo, setNewRoomInfo] = useState({
-    seat:2,
+    seat:"2",
     vacantStatus: true,
   });
   
@@ -34,7 +34,7 @@ const AddNewRoom = () => {
     padding: 20, 
     zIndex: 99 
   };
-  handlePickerField = (value) => {
+  const handlePickerField = (value) => {
     console.log(value)
     setNewRoomInfo({...newRoomInfo,...value});
   }
@@ -74,7 +74,8 @@ const AddNewRoom = () => {
         // console.log(newRoomInfo.roomNo)
         setLoggedUser({ ...loggedUser, addedNew: value.roomNo })
 
-      });
+      })
+      .catch(err => {console.log(err)})
   };
   // console.log(imageData);
 

@@ -94,10 +94,12 @@ const LoginPage = ({ navigation }) => {
                   isUser: false,
                 });
               }
-            });
+            })
+            .catch(err => {console.log(err)})
         }
         setIsDone(true);
-      });
+      })
+      .catch(err => {console.log(err)})
   };
 
   console.log('64', loggedUser);

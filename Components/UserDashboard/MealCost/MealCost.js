@@ -29,7 +29,7 @@ const MealCost = props => {
   }, [])
 
   useEffect(() => {
-    fetch(`http://localhost:8085/allMealRate`)
+    fetch(`https://thawing-meadow-93763.herokuapp.com/allMealRate`)
       .then(res => res.json())
       .then(data => {
         console.log("all meal rate0", data);

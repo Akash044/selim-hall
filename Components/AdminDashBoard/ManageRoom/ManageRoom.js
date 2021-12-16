@@ -23,7 +23,7 @@ const ManageRoom = () => {
 
   useEffect(() => {
     setVisible(true);
-    fetch('http://localhost:8085/allRooms')
+    fetch('https://thawing-meadow-93763.herokuapp.com/allRooms')
       .then(res => res.json())
       .then(rooms => {
         console.log("hijiii");

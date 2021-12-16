@@ -38,7 +38,7 @@ const Room = (props) => {
 
 
     const handleDeleteRoomBtn = roomId => {
-        fetch(`http://localhost:8085/deleteRoom/${roomId}`, {
+        fetch(`https://thawing-meadow-93763.herokuapp.com/deleteRoom/${roomId}`, {
             method: 'DELETE',
         })
             .then(res => res.json())
@@ -52,7 +52,7 @@ const Room = (props) => {
     const handleUpdateRoomBtn = roomId => {
         setVisible(true);
         console.log(roomId, updatedRoomInfo)
-        // fetch(`http://localhost:8085/deleteRoom/${roomId}`, {
+        // fetch(`https://thawing-meadow-93763.herokuapp.com/deleteRoom/${roomId}`, {
         //     method: 'PATCH',
         // })
         //     .then(res => res.json())

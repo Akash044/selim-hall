@@ -21,7 +21,7 @@ const ManageBoarder = () => {
 
     useEffect(() => {
         setVisible(true);
-        fetch('http://localhost:8085/boarders')
+        fetch('https://thawing-meadow-93763.herokuapp.com/boarders')
         .then(res => res.json())
         .then(boarders => {
           console.log("hijiii");

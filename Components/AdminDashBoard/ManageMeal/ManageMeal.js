@@ -40,7 +40,7 @@ const ManageMeal = () => {
   const handleUploadBtn = mr => {
     setLoad(true);
 
-    fetch('http://localhost:8085/addMealRate', {
+    fetch('https://thawing-meadow-93763.herokuapp.com/addMealRate', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ ...mr, ...date }),

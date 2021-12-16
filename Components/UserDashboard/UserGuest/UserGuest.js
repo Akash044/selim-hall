@@ -77,7 +77,7 @@ const UserGuest = () => {
     console.log(info, date, imageData);
     setLoad(true);
 
-    fetch('http://localhost:8085/addGuest', {
+    fetch('https://thawing-meadow-93763.herokuapp.com/addGuest', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({...info, ...date, ...imageData, relativeEmail:loggedUser.email}),

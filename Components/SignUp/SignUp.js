@@ -51,7 +51,7 @@ const SignUp = ({ route, navigation }) => {
   const handleRegisterBtn = values => {
     // console.log(values);
     const info = { ...values, ...deptSec }
-    fetch('http://localhost:8085/addBoarder', {
+    fetch('https://thawing-meadow-93763.herokuapp.com/addBoarder', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ ...info, ...imageData }),

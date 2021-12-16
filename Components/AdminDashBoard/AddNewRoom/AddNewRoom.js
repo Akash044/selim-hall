@@ -62,7 +62,7 @@ const AddNewRoom = () => {
 
   const handleAddRoom = (value) => {
     setVisible(true);
-    fetch('http://localhost:8085/addRoom', {
+    fetch('https://thawing-meadow-93763.herokuapp.com/addRoom', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ ...newRoomInfo,...value, ...imageData }),

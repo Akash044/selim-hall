@@ -52,7 +52,7 @@ const SignUp = ({ route, navigation }) => {
 
   const updateRoomVacantStatus = () => {
     console.log("called")
-    fetch('http://localhost:8085/bookedRoom', {
+    fetch('https://thawing-meadow-93763.herokuapp.com/bookedRoom', {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ id: id, status: false }),
@@ -69,7 +69,7 @@ const SignUp = ({ route, navigation }) => {
   const handleRegisterBtn = values => {
     // console.log(values);
     const info = { ...values, ...deptSec }
-    fetch('http://localhost:8085/addBoarder', {
+    fetch('https://thawing-meadow-93763.herokuapp.com/addBoarder', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ ...info, ...imageData }),

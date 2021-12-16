@@ -18,7 +18,7 @@ const SearchResult = ({ navigation }) => {
       setNetStatus(networkState.isConnected)
     });
 
-    fetch('http://localhost:8085/allRooms')
+    fetch('https://thawing-meadow-93763.herokuapp.com/allRooms')
       .then(res => res.json())
       .then(rooms => {
         const vacRooms = rooms.filter(room => room.vacantStatus === true);

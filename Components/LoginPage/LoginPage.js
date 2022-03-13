@@ -52,7 +52,7 @@ const LoginPage = ({ navigation }) => {
   const isAdminHandle = userInfo => {
     setIsDone(false);
     fetch(
-      `https://thawing-meadow-93763.herokuapp.com/isAdmin?email=${userInfo.user.email}`,
+      `https://intense-ridge-49211.herokuapp.com/isAdmin?email=${userInfo.user.email}`,
     )
       .then(res => res.json())
       .then(data => {
@@ -68,7 +68,7 @@ const LoginPage = ({ navigation }) => {
           });
         } else {
           fetch(
-            `https://thawing-meadow-93763.herokuapp.com/isUser?email=${userInfo.user.email}`,
+            `https://intense-ridge-49211.herokuapp.com/isUser?email=${userInfo.user.email}`,
           )
             .then(res => res.json())
             .then(data => {

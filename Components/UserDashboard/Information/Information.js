@@ -10,7 +10,7 @@ const Information = (props) => {
 
   const handleSubmitBtn = () => {
     console.log(updatedInfo);
-    fetch(`https://thawing-meadow-93763.herokuapp.com/boarder/${props.email}`, {
+    fetch(`https://intense-ridge-49211.herokuapp.com/boarder/${props.email}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(updatedInfo),

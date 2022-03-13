@@ -27,7 +27,7 @@ const UserRentStatus = () => {
   const [load, setLoad] = useState(false);
 
   useEffect(() => {
-    fetch(`https://thawing-meadow-93763.herokuapp.com/paidRents/${loggedUser.email}`)
+    fetch(`https://intense-ridge-49211.herokuapp.com/paidRents/${loggedUser.email}`)
       .then(res => res.json())
       .then(data => {
         setPaidRents(data);
@@ -41,7 +41,7 @@ const UserRentStatus = () => {
   const handlePayBtn = () => { 
     setRent({...rent, status: 'pending'});
 
-    fetch('https://thawing-meadow-93763.herokuapp.com/addRent', {
+    fetch('https://intense-ridge-49211.herokuapp.com/addRent', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify(rent),

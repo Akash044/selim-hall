@@ -51,7 +51,7 @@ const ManageRent = () => {
 
   useEffect(() => {
     setVisible(true);
-    fetch('https://thawing-meadow-93763.herokuapp.com/paidRents')
+    fetch('https://intense-ridge-49211.herokuapp.com/paidRents')
       .then(res => res.json())
       .then(data => {
         const allPending = data.filter(element => element.status === 'pending');
@@ -62,47 +62,50 @@ const ManageRent = () => {
       .catch(err => {console.log(err)})
   }, [status]);
 
-  const handleEmail = (rent) => {
-    Mailer.mail({
-      subject: 'Rent payment status',
-      recipients: [rent.email],
-      body: `Your payment is ${rent.status} and TrxID is ${rent.trxID}. If face any difficulty, please contact 01737605991`,
-      isHTML: true,
-      attachment: {
-        path: '',  // The absolute path of the file from which to read data.
-        type: '',   // Mime Type: jpg, png, doc, ppt, html, pdf, csv
-        name: '',   // Optional: Custom filename for attachment
-      }
-    }, (error, event) => {
-      Alert.alert(
-        error,
-        event,
-        [
-          {text: 'Ok', onPress: () => console.log('OK: Email Error Response')},
-          {text: 'Cancel', onPress: () => console.log('CANCEL: Email Error Response')}
-        ],
-        { cancelable: true }
-      )
-    });
-  }
+  // const handleEmail = (rent) => {
+  //   Mailer.mail({
+  //     subject: 'Rent payment status',
+  //     recipients: [rent.email],
+  //     body: `Your payment is ${rent.status} and TrxID is ${rent.trxID}. If face any difficulty, please contact 01737605991`,
+  //     isHTML: true,
+  //     attachment: {
+  //       path: '',  // The absolute path of the file from which to read data.
+  //       type: '',   // Mime Type: jpg, png, doc, ppt, html, pdf, csv
+  //       name: '',   // Optional: Custom filename for attachment
+  //     }
+  //   }, (error, event) => {
+  //     Alert.alert(
+  //       error,
+  //       event,
+  //       [
+  //         {text: 'Ok', onPress: () => console.log('OK: Email Error Response')},
+  //         {text: 'Cancel', onPress: () => console.log('CANCEL: Email Error Response')}
+  //       ],
+  //       { cancelable: true }
+  //     )
+  //   });
+  // }
 
   const handleChangeStatus = rent => {
     console.log(rent.status);
     fetch(
-      `https://thawing-meadow-93763.herokuapp.com/paidRents/${rent.trxID}`,
+      `https://intense-ridge-49211.herokuapp.com/paidRents/${rent.trxID}`,
       {
         method: 'PATCH',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({status: rent.status}),
+        body: JSON.stringify({status: rent.status, email: rent.email, trxID: rent.trxID}),
       },
     )
       .then(res => res.json())
       .then(data => {
         console.log(data);
-        // data && alert("payment status updated")
-        handleEmail(rent);
+        data.updateInfo && alert("payment status updated")
+        data.mailResponse && alert("Email has been sent to user")
+        // handleEmail(rent);
         setStatus(rent.status);
-      });
+      }).catch(err => {
+        alert(err.message)
+      })
   };
 
   const renderItem = ({item}) => (

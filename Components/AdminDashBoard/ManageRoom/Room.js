@@ -38,7 +38,7 @@ const Room = (props) => {
 
 
     const handleDeleteRoomBtn = roomId => {
-        fetch(`https://thawing-meadow-93763.herokuapp.com/deleteRoom/${roomId}`, {
+        fetch(`https://intense-ridge-49211.herokuapp.com/deleteRoom/${roomId}`, {
             method: 'DELETE',
         })
             .then(res => res.json())
@@ -46,23 +46,29 @@ const Room = (props) => {
                 data && alert('Room deleted successfully');
                 setLoggedUser({ ...loggedUser, deleted: roomId });
             })
-            .catch(err => {console.log(err)})
+            .catch(err => { alert('Error updating room info.Try again later')})
     };
 
+    const handleUpdateRoomModalBtn = () => {
+        setVisible(true);
+    }
 
     const handleUpdateRoomBtn = roomId => {
-        setVisible(true);
         console.log(roomId, updatedRoomInfo)
-        // fetch(`https://thawing-meadow-93763.herokuapp.com/deleteRoom/${roomId}`, {
-        //     method: 'PATCH',
-        // })
-        //     .then(res => res.json())
-        //     .then(data => {
-        //         setVisible(false);
-        //         data && alert('Room deleted successfully');
-        //         setLoggedUser({ ...loggedUser, updated: roomId });
+        fetch(`https://intense-ridge-49211.herokuapp.com/updateRoomInfo/${roomId}`, {
+            method: 'PATCH',
+            headers: {'Content-Type':'application/json'},
+            body: JSON.stringify({roomID: roomId, ...updatedRoomInfo})   
+        })
+            .then(res => res.json())
+            .then(data => {
+                setVisible(false);
+                data && alert('Room info updated successfully');
+                // setLoggedUser({ ...loggedUser, updated: roomId });
 
-        //     });
+            }).catch(err => {
+                alert('Error updating room info. Try again later')
+            })
     };
 
 
@@ -85,7 +91,7 @@ const Room = (props) => {
                         <Button icon="update"
                             mode="contained"
                             color="green"
-                            onPress={() => handleUpdateRoomBtn(props.item._id)}>
+                            onPress={() => handleUpdateRoomModalBtn()}>
                             Update
                         </Button>
                     </Card.Actions>

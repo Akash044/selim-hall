@@ -7,6 +7,7 @@ import ManageRoom from '../ManageRoom/ManageRoom';
 import ManageMeal from '../ManageMeal/ManageMeal';
 import ManageRent from '../ManageRent/ManageRent';
 import ManageBoarder from '../ManageBoarder/ManageBoarder';
+import MealQuantityStatus from '../MealStatus/MealQuantityStatus';
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -51,6 +52,16 @@ const AdminBottomTabs = () => {
           tabBarLabel: 'Rate',
           tabBarIcon: ({color}) => (
             <MaterialCommunityIcons name="food" color={color} size={26} />
+          ),
+        }}
+      />
+       <Tab.Screen
+        name="MealQS"
+        component={MealQuantityStatus}
+        options={{
+          tabBarLabel: 'Quantity',
+          tabBarIcon: ({color}) => (
+            <MaterialCommunityIcons name="basket" color={color} size={26} />
           ),
         }}
       />

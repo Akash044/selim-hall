@@ -10,8 +10,8 @@ import { userContext } from '../../App';
 
 const signUpValidationSchema = yup.object().shape({
   name: yup.string().required('User name is Required'),
-  roll: yup.string().required('User roll is Required'),
-  contactNo: yup.number().min(11).required('User name is Required'),
+  roll: yup.string().min(7).max(7).required('User roll is Required'),
+  contactNo: yup.string().matches(/(^(\+88|0088)?(01){1}[3456789]{1}(\d){8})$/,'Must follow bd number pattern').required('User name is Required'),
   email: yup
     .string()
     .matches(
@@ -52,7 +52,7 @@ const SignUp = ({ route, navigation }) => {
 
   const updateRoomVacantStatus = () => {
     console.log("called")
-    fetch('https://thawing-meadow-93763.herokuapp.com/bookedRoom', {
+    fetch('https://intense-ridge-49211.herokuapp.com/bookedRoom', {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ id: id, status: false }),
@@ -69,7 +69,7 @@ const SignUp = ({ route, navigation }) => {
   const handleRegisterBtn = values => {
     // console.log(values);
     const info = { ...values, ...deptSec }
-    fetch('https://thawing-meadow-93763.herokuapp.com/addBoarder', {
+    fetch('https://intense-ridge-49211.herokuapp.com/addBoarder', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ ...info, ...imageData }),

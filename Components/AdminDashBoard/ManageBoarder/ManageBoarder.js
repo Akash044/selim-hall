@@ -21,7 +21,7 @@ const ManageBoarder = () => {
 
     useEffect(() => {
         setVisible(true);
-        fetch('https://thawing-meadow-93763.herokuapp.com/boarders')
+        fetch('https://intense-ridge-49211.herokuapp.com/boarders')
         .then(res => res.json())
         .then(boarders => {
           console.log("hijiii");

@@ -12,6 +12,7 @@ import {
   TextInput,
   Button
 } from 'react-native-paper';
+import NetInfo from "@react-native-community/netinfo";
 import { Formik, Field } from 'formik';
 import * as yup from 'yup';
 
@@ -34,13 +35,17 @@ const SignIn = () => {
   const [loggedUser, setLoggedUser] = useContext(userContext);
   const [error, setError] = useState("");
   const [visible, setVisible] = useState(false);
+  const [netStatus, setNetStatus] = useState(true);
   const containerStyle = { marginHorizontal: 30, borderRadius: 10, backgroundColor: 'white', padding: 20, zIndex: 99 };
 
 
   const handleEmailPassSignIn = userInfo => {
+    NetInfo.addEventListener(networkState => {
+      setNetStatus(networkState.isConnected)
+    });
     console.log(userInfo);
     setVisible(true);
-    fetch('https://thawing-meadow-93763.herokuapp.com/login', {
+    fetch('https://intense-ridge-49211.herokuapp.com/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(userInfo),
@@ -53,7 +58,10 @@ const SignIn = () => {
         setVisible(false);
 
       })
-      .catch(err => {console.log(err)})
+      .catch(err => {
+        console.log({err})
+        
+      })
   };
 
   return (
@@ -114,14 +122,19 @@ const SignIn = () => {
         )}
       </Formik>
       <View>
-      <Provider>
-        <Portal>
-          <Modal visible={visible} contentContainerStyle={containerStyle}>
-            <Text>Loading. Please wait</Text>
-            <ActivityIndicator style={{ paddingTop: 10 }} animating={true} color={Colors.red800} />
-          </Modal>
-        </Portal>
-      </Provider>
+        <Provider>
+          <Portal>
+            <Modal visible={visible} contentContainerStyle={containerStyle}>
+
+              {
+                !netStatus ? <Text style={{ marginTop: 250, color: "red" }}>Network failed. Please connect your device to network</Text> :<ActivityIndicator style={{ paddingTop: 10 }} animating={true} color={Colors.red800} />
+                //  : <Text>Loading. Please wait</Text>
+                // <ActivityIndicator animating={true} size="large" color={Colors.green800} style={{ marginTop: 250 }} />
+              }
+              
+            </Modal>
+          </Portal>
+        </Provider>
       </View>
     </View>
   );

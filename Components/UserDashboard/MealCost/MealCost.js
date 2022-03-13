@@ -19,7 +19,7 @@ const MealCost = props => {
 
 
   useEffect(() => {
-    fetch(`https://thawing-meadow-93763.herokuapp.com/boarderMeal/${props.email}`)
+    fetch(`https://intense-ridge-49211.herokuapp.com/boarderMeal/${props.email}`)
       .then(res => res.json())
       .then(data => {
         console.log("my meals", data);
@@ -30,7 +30,7 @@ const MealCost = props => {
   }, [])
 
   useEffect(() => {
-    fetch(`https://thawing-meadow-93763.herokuapp.com/allMealRate`)
+    fetch(`https://intense-ridge-49211.herokuapp.com/allMealRate`)
       .then(res => res.json())
       .then(data => {
         console.log("all meal rate0", data);

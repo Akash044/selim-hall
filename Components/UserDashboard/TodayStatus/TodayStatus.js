@@ -8,7 +8,7 @@ const TodayStatus = () => {
     const [loggedUser, setLoggedUser] = useContext(userContext);
     const [todayStatus, setTodayStatus] = useState({})
     useEffect(() => {
-        fetch(`https://thawing-meadow-93763.herokuapp.com/boarderMeal/${loggedUser.email}`)
+        fetch(`https://intense-ridge-49211.herokuapp.com/boarderMeal/${loggedUser.email}`)
         .then(res => res.json())
         .then(data => {
           console.log("my meals", data);

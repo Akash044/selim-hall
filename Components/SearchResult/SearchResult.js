@@ -18,7 +18,7 @@ const SearchResult = ({ navigation }) => {
       setNetStatus(networkState.isConnected)
     });
 
-    fetch('https://thawing-meadow-93763.herokuapp.com/allRooms')
+    fetch('https://intense-ridge-49211.herokuapp.com/allRooms')
       .then(res => res.json())
       .then(rooms => {
         const vacRooms = rooms.filter(room => room.vacantStatus === true);
@@ -33,7 +33,7 @@ const SearchResult = ({ navigation }) => {
   };
   const renderItem = ({ item }) => <Item item={item} handleSearch={handleSearch} />;
   return (
-    <View>
+    <View>  
       <FlatList
         data={vacantRooms}
         renderItem={renderItem}

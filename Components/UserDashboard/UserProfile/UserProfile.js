@@ -11,7 +11,7 @@ const UserProfile = () => {
 
   useEffect(() => {
     fetch(
-      `https://thawing-meadow-93763.herokuapp.com/boarder/${loggedUser.email}`,
+      `https://intense-ridge-49211.herokuapp.com/boarder/${loggedUser.email}`,
     )
       .then(res => res.json())
       .then(data => {

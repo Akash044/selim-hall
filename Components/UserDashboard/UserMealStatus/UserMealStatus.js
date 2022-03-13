@@ -45,7 +45,7 @@ const UserMealStatus = () => {
     //   date: selectedDate,
     // });
     // console.log(selectedDate, mealInfo);
-    fetch('https://thawing-meadow-93763.herokuapp.com/addMeal', {
+    fetch('https://intense-ridge-49211.herokuapp.com/addMeal', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({

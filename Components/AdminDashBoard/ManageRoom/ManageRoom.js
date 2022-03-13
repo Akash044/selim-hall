@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { StyleSheet, View, ScrollView, FlatList } from 'react-native';
+import { StyleSheet, View, ScrollView, FlatList, RefreshControl  } from 'react-native';
 import {
   Modal,
   Portal,
@@ -8,22 +8,74 @@ import {
   ActivityIndicator,
   Colors,
 } from 'react-native-paper';
+import NetInfo from "@react-native-community/netinfo";
 import { userContext } from '../../../App';
 import Room from './Room';
 
-const ManageRoom = () => {
+const wait = (timeout) => {
+  return new Promise((resolve) => {
+    setTimeout(resolve, timeout);
+  })
+}
+
+const ManageRoom = ({navigation}) => {
   const [loggedUser, setLoggedUser] = useContext(userContext);
   const [allRooms, setAllRooms] = useState([]);
   const [visible, setVisible] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+  const [netStatus, setNetStatus] = useState(true);
   const { deleted, updated, addedNew } = loggedUser;
 
   const containerStyle = { marginHorizontal: 30, borderRadius: 10, backgroundColor: 'white', padding: 20, zIndex: 99 };
 
+  //  useEffect(() => {
+  //    navigation.addListener('focus', async() =>{
+  //     setVisible(true);
+  //    await fetch('https://intense-ridge-49211.herokuapp.com/allRooms')
+  //       .then(res => res.json())
+  //       .then(rooms => {
+  //         console.log("hijiii", rooms);
+  //         setAllRooms(rooms);
+  //         setVisible(false);
+  //         // console.log('16 ', allRooms);
+  //       })
+  //       .catch(err => {console.log(err)}) 
+  //    } )
+  //  })
 
+
+  const onRefresh = () => {
+    NetInfo.addEventListener(networkState => {
+      setNetStatus(networkState.isConnected)
+    });
+    setRefreshing(true)
+    setVisible(true);
+    fetch('https://intense-ridge-49211.herokuapp.com/allRooms')
+      .then(res => res.json())
+      .then(rooms => {
+        console.log("hijiii", rooms);
+        setAllRooms(rooms);
+        setVisible(false);
+        // console.log('16 ', allRooms);
+      })
+      .catch(err => {
+        
+      })
+    wait(4000).then(() => {
+      setRefreshing(false);
+    }
+    ,[refreshing]).catch(err => {console.log(err)})
+  }
 
   useEffect(() => {
+    NetInfo.addEventListener(networkState => {
+      setNetStatus(networkState.isConnected)
+    });
+
+    console.log(netStatus)
+
     setVisible(true);
-    fetch('https://thawing-meadow-93763.herokuapp.com/allRooms')
+    fetch('https://intense-ridge-49211.herokuapp.com/allRooms')
       .then(res => res.json())
       .then(rooms => {
         console.log("hijiii");
@@ -32,7 +84,8 @@ const ManageRoom = () => {
         // console.log('16 ', allRooms);
       })
       .catch(err => {console.log(err)})
-  }, [addedNew, updated]);
+  }, []);
+  // addedNew, updated
 
   useEffect(() => {
     setVisible(true);
@@ -47,17 +100,20 @@ const ManageRoom = () => {
 
     <View>
       {allRooms.length ? <FlatList
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
         data={allRooms}
         renderItem={renderItem}
         keyExtractor={item => item._id}
       /> : <Text style={{ fontSize: 30 }}>Empty room</Text>
       }
+      
     </View>
     <Provider>
       <Portal>
         <Modal visible={visible} contentContainerStyle={containerStyle}>
-          <Text>Loading. Please wait</Text>
-          <ActivityIndicator style={{ paddingTop: 10 }} animating={true} color={Colors.red800} />
+        {!netStatus ? <Text style={{ marginTop: 250, color: "red" }}>Network failed. Please connect your device to network</Text> :<ActivityIndicator style={{ paddingTop: 10 }} animating={true} color={Colors.red800} />}
         </Modal>
       </Portal>
     </Provider>
